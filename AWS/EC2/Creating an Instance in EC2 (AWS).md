@@ -40,6 +40,7 @@ This guide provides step-by-step instructions on how to create a new virtual ser
   chmod 400 ~/.ssh/my-key-pair.pem
   ssh -i ~/.ssh/my-key-pair.pem ubuntu@your-instance-public-dns.compute-1.amazonaws.com
   ```
+[sudo chmod details](https://github.com/dimahike/notes/blob/main/sudo/chmod(%20Linux%20File%20Permissions%20Quick%20Reference%20Guide).md)
 
 ## Step 5: Access Your Instance
 
