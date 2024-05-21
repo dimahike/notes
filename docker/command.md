@@ -1,6 +1,7 @@
 1. docker build .
 Build the image after we set the docker config
-Example for node.js app:
+
+Example for node.js app ([Docker config explanaition](https://github.com/dimahike/notes/blob/main/docker/Docker%20config.md)):
 ```Docker
 FROM node:14
 
@@ -16,6 +17,7 @@ EXPOSE 3000
 
 CMD [ "node", "app.mjs" ]
 ```
+
 
 2. docker run -p 3000:3000 b275b9b05010 [folder_name]
 *folder_name*  if we need it, because we build `.` we don't neen it to add folder_name
