@@ -51,6 +51,7 @@ CMD [ "node", "app.mjs" ]
 ```
 - **Explanation**: This line specifies the command to run when the container starts. In this case, it runs `node app.mjs`, which starts your Node.js application. The `CMD` instruction allows you to provide defaults for an executing container, including specifying the executable to run.
 
-### Summary
 
-This `Dockerfile` sets up a Node.js environment inside a Docker container, installs dependencies, copies the application code, and specifies the command to start the application. It ensures that your application runs consistently across different environments.
+---
+### Info:
+- **Layers**: Every layer executes from top to bottom. If there are any changes, the cache will not be used for the subsequent layers.
