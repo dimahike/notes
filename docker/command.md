@@ -52,7 +52,12 @@ Run the Node.js image:
 docker run node
 ```
 If the image is not available locally, it will be downloaded from Docker Hub.
-- `docker run -it node`: Runs an interactive session, allowing interaction with the Node terminal.
+- `docker run -it node`: Runs an `-i` interactive session, `-t`allowing interaction with the Node terminal.
+- Sometimes if we have to interact with code it will not run without `-i` interactive modoe for example:
+- `docker run --rm IMAGE`. it wil remove a container after exist of the comainer with the `--rm` flag.
+```py
+min_number = int(input('Please enter the min number: '))
+```
 
 ---
 ### 6. Restart Container
@@ -60,7 +65,7 @@ If the image is not available locally, it will be downloaded from Docker Hub.
 To rerun an already created container, use the following command:
 
 ```sh
-docker start [container_name/id]
+docker start CONTAINER
 ```
 
 ---
@@ -69,22 +74,65 @@ docker start [container_name/id]
 Create and run a new container in detach mode, which means we won't see a terminal for the running image.
 
 ```sh
-docker run -p 8000:80 -d [container_name/id]
+docker run -p 8000:80 -d CONTAINER
 ```
 
 if we wanna see a terminal for the running image then we can run the below command
 
 ```sh
-docker attach [container_name/id]
+docker attach CONTAINER
 ```
+By default, if you run a Container without -d, you run in "attached mode".
+If you started a container in detached mode (i.e. with -d), you can still attach to it afterwards without restarting the Container
+
 Also, we can see just logs with this command
 
 ```sh
-docker logs [container_name/id]
+docker logs CONTAINER
 ```
 If we add the flag `-f` then we will see the all logs and start attach mode
 
 ```sh
-docker logs -f [container_name/id]
+docker logs -f CONTAINER
 ```
+
+### 8. Remove container
+
+```sh
+docker rm CONTAINER CONTAINER CONTAINER ....
+```
+We have to stop a container before we remove it
+
+---
+### 8. Remove image
+
+```sh
+docker rmi IMAGE IMAGE IMAGE ....
+```
+Firstly we have to remove containers which it relatives with an image
+
+---
+### 9. Inspect image
+We can see all image info
+
+```sh
+docker image inspect IMAGE
+```
+
+---
+### 9. Copy files to contaner
+Ussualy we don't use it. Mostly it will use for testing
+```sh
+docker cp /local_folder/. CONTAINER:container_foler path_to_container_folder
+```
+The `.` will copy all filles from the folder.
+
+We can copy from container to local for the check
+```sh
+docker cp CONTAINER:container_foler path_to_local_folder
+```
+
+
+
+
 
