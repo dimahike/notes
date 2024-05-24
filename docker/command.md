@@ -5,6 +5,7 @@ Build the image after setting up the Docker configuration.
 ```sh
 docker build .
 ```
+- `-t name:tag` add a name and tag for creating image
 
 **Example for a Node.js app** ([Docker config explanation](https://github.com/dimahike/notes/blob/main/docker/Docker%20config.md)):
 ```Dockerfile
@@ -93,12 +94,22 @@ docker rm CONTAINER CONTAINER CONTAINER ...
 ```
 You must stop a container before removing it.
 
+To remove all containers, use:
+```sh
+docker container prune -f
+```
+
 ### 9. Remove Image
 To remove one or more images, use:
 ```sh
 docker rmi IMAGE IMAGE IMAGE ...
 ```
 You must remove all containers associated with an image before removing the image itself.
+
+If you wanna remove all images then you can run this command:
+```sh
+docker image prune -a
+```
 
 ### 10. Inspect Image
 To see all the information about an image, use:
@@ -117,3 +128,27 @@ To copy files from a container to the local system:
 ```sh
 docker cp CONTAINER:path_to_container_folder path_to_local_folder
 ```
+
+### 12. Rename Image
+```sh
+docker tag IMAGE_NAME:IMAGE_TAG NEW_IMAGE_NAME:NEW_IMAGE_TAG 
+```
+Actually, we don't rename we create a renamed clone image
+
+### 13. Sharing Image
+- Docker Hub [Official Docker](https://hub.docker.com/)
+1. We have to create a repository on the Docker Hub
+2. Our project should have the name `DOCKER_HUB_USER_NAME/IMAGE_NAME(dimadeveloper2020/node-hello-world)`
+```sh
+docker push IMAGE_NAME
+docker pull IMAGE_NAME
+```
+Everyone can pull if the image is public
+
+- Private Register Hub
+```sh
+docker push HOST:NAME
+docker pull HOST:NAME
+```
+
+
