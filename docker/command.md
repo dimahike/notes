@@ -26,11 +26,17 @@ CMD [ "node", "app.mjs" ]
 ### 2. Run the Docker Container
 Run the container with the following command:
 ```sh
-docker run -p 8000:3000 b275b9b05010 [folder_name]
+docker run -p 8000:3000 b275b9b05010
 ```
-- *folder_name*: If needed. Since we built `.` (current directory), we don't need to add `folder_name`.
-- *3000:3000*: Opens local port 8000 from the container port 3000.
-- *b275b9b05010*: Image ID. You can copy the first 10 symbols from the full ID (e.g., `b275b9b05010af5fd9b1c2530fca9b59b13932ec868e6e2e26db933c07b59d86`). You can also find it in Docker Desktop.
+- `-it`: Runs an `-i` interactive session, `-t` allowing interaction with the Node terminal. For example, if your code requires user input:
+```py
+min_number = int(input('Please enter the min number: '))
+```
+- `--rm`: Automatically removes the container after it exits.
+- `--name custom_container_name`: Allows you to specify a custom name for the container.
+
+- `8000:3000`: Maps local port 8000 to container port 3000.
+- `b275b9b05010`: Image ID. You can use the first 10 characters of the full ID (e.g., `b275b9b05010af5fd9b1c2530fca9b59b13932ec868e6e2e26db933c07b59d86`). This ID can be found in Docker Desktop.
 
 ### 3. Display Running Containers
 Use the following command to display your running containers:
@@ -44,7 +50,7 @@ Stop a container using its name:
 ```sh
 docker stop vigilant_vaughan
 ```
-- *vigilant_vaughan*: The name of the running image (found in the last column of `docker ps`). It may take a few seconds to stop.
+- `vigilant_vaughan`: The name of the running container (found in the last column of `docker ps`). It may take a few seconds to stop.
 
 ### 5. Run a Node.js Image
 Run the Node.js image:
@@ -52,87 +58,62 @@ Run the Node.js image:
 docker run node
 ```
 If the image is not available locally, it will be downloaded from Docker Hub.
-- `docker run -it node`: Runs an `-i` interactive session, `-t`allowing interaction with the Node terminal.
-- Sometimes if we have to interact with code it will not run without `-i` interactive modoe for example:
-- `docker run --rm IMAGE`. it wil remove a container after exist of the comainer with the `--rm` flag.
-```py
-min_number = int(input('Please enter the min number: '))
-```
 
----
 ### 6. Restart Container
-
 To rerun an already created container, use the following command:
-
 ```sh
 docker start CONTAINER
 ```
 
----
 ### 7. Detach Mode
-
 Create and run a new container in detach mode, which means we won't see a terminal for the running image.
-
 ```sh
 docker run -p 8000:80 -d CONTAINER
 ```
-
-if we wanna see a terminal for the running image then we can run the below command
-
+To attach to the terminal of a running image, use:
 ```sh
 docker attach CONTAINER
 ```
-By default, if you run a Container without -d, you run in "attached mode".
-If you started a container in detached mode (i.e. with -d), you can still attach to it afterwards without restarting the Container
+By default, running a container without `-d` starts it in "attached mode".
+If you started a container in detached mode (with `-d`), you can attach to it later without restarting the container.
 
-Also, we can see just logs with this command
-
+To see the logs of a running container:
 ```sh
 docker logs CONTAINER
 ```
-If we add the flag `-f` then we will see the all logs and start attach mode
-
+To continuously stream the logs, use the `-f` flag:
 ```sh
 docker logs -f CONTAINER
 ```
 
-### 8. Remove container
-
+### 8. Remove Container
+To remove one or more containers, use:
 ```sh
-docker rm CONTAINER CONTAINER CONTAINER ....
+docker rm CONTAINER CONTAINER CONTAINER ...
 ```
-We have to stop a container before we remove it
+You must stop a container before removing it.
 
----
-### 8. Remove image
-
+### 9. Remove Image
+To remove one or more images, use:
 ```sh
-docker rmi IMAGE IMAGE IMAGE ....
+docker rmi IMAGE IMAGE IMAGE ...
 ```
-Firstly we have to remove containers which it relatives with an image
+You must remove all containers associated with an image before removing the image itself.
 
----
-### 9. Inspect image
-We can see all image info
-
+### 10. Inspect Image
+To see all the information about an image, use:
 ```sh
 docker image inspect IMAGE
 ```
 
----
-### 9. Copy files to contaner
-Ussualy we don't use it. Mostly it will use for testing
+### 11. Copy Files to Container
+Usually used for testing. To copy files from the local system to a container:
 ```sh
-docker cp /local_folder/. CONTAINER:container_foler path_to_container_folder
+docker cp /local_folder/. CONTAINER:path_to_container_folder
 ```
-The `.` will copy all filles from the folder.
+The `.` copies all files from the local folder.
 
-We can copy from container to local for the check
+To copy files from a container to the local system:
 ```sh
-docker cp CONTAINER:container_foler path_to_local_folder
+docker cp CONTAINER:path_to_container_folder path_to_local_folder
 ```
-
-
-
-
-
