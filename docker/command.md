@@ -138,7 +138,7 @@ Actually, we don't rename we create a renamed clone image
 ### 13. Sharing Image
 - Docker Hub [Official Docker](https://hub.docker.com/)
 1. We have to create a repository on the Docker Hub
-2. Our project should have the name `DOCKER_HUB_USER_NAME/IMAGE_NAME(dimadeveloper2020/node-hello-world)`
+2. Our shared image should have the name `DOCKER_HUB_USER_NAME/IMAGE_NAME(dimadeveloper2020/node-hello-world)`
 ```sh
 docker push IMAGE_NAME
 docker pull IMAGE_NAME
