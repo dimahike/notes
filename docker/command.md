@@ -35,7 +35,7 @@ min_number = int(input('Please enter the min number: '))
 ```
 - `--rm`: Automatically removes the container after it exits.
 - `--name custom_container_name`: Allows you to specify a custom name for the container.
-
+- `-v VOLUME_NAME:/PATH_FOLDER`: create the persist store
 - `8000:3000`: Maps local port 8000 to container port 3000.
 - `b275b9b05010`: Image ID. You can use the first 10 characters of the full ID (e.g., `b275b9b05010af5fd9b1c2530fca9b59b13932ec868e6e2e26db933c07b59d86`). This ID can be found in Docker Desktop.
 
@@ -151,4 +151,23 @@ docker push HOST:NAME
 docker pull HOST:NAME
 ```
 
+### 14. Volume
+```sh
+docker volume COMMAND
+```
+- `ls`: List volumes
+- `prune`: Remove unused local volumes
+- `rm VOLUME_NAME`: Remove one or more volumes
+We create a volume when we create container (`docker run ...`) with the `-v VOLUME_NAME:/PATH_FOLDER` flag
 
+You can add an anonymous volume, which will be removed after the container is removed.
+
+```Dockerfile
+...
+COPY . /app
+
+EXPOSE 80
+
+VOLUME [ "/app/feedback" ]
+...
+```
