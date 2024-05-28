@@ -6,6 +6,11 @@ Build the image after setting up the Docker configuration.
 docker build .
 ```
 - `-t name:tag` add a name and tag for creating image
+- `--build-arg DOCKER_ARGUMENT_NAME=VALUE` change doocker arguments when we build an image.
+  
+  ```Dockerfile
+  ARG DOCKER_ARGUMENT_NAME=VALUE
+  ```
 
 **Example for a Node.js app** ([Docker config explanation](https://github.com/dimahike/notes/blob/main/docker/Docker%20config.md)):
 ```Dockerfile
@@ -19,7 +24,12 @@ RUN npm install
 
 COPY . .
 
-EXPOSE 3000
+ARG DEFAULT_PORT=80
+
+ENV PORT $DEFAULT_PORT
+
+# or "EXPOSE 3000"
+EXPOSE $PORT
 
 CMD [ "node", "app.mjs" ]
 ```
@@ -46,8 +56,24 @@ min_number = int(input('Please enter the min number: '))
   - `-v VOLUME_NAME:/IMAGE_PATH_DATA`: Named Volume. It is persistent and can be shared across containers
   - `-v LOACAL_PATH_TO_CODE:/IMAGE_PATH_APP`: Bind Mount. Store on the host system (local machine) and can be shared across containers [Bind mount](#15-bind-mounts-managed-by-you)
     we can add option read only (`ro`) to the volume `-v LOACAL_PATH_TO_CODE:/IMAGE_PATH_APP:ro`    
-- `8000:3000`: Maps local port 8000 to container port 3000.
-- `b275b9b05010`: Image ID. You can use the first 10 characters of the full ID (e.g., `b275b9b05010af5fd9b1c2530fca9b59b13932ec868e6e2e26db933c07b59d86`). This ID can be found in Docker Desktop.
+- `-p 8000:3000`: Maps local port 8000 to container port 3000.
+- Environment variables
+  - `--env ENV_NAME=VALUE` (-e ENV_NAME=VALUE): Set Environment variables. multiple env-variables `-e ENV_NAME=VALUE -e ENV2_NAME=VALUE`
+  - `--env-file ./.env`: use `.env` file from current path in the terminal.
+  - We can set env-variables in the `Dockerfile`
+
+    ```Dockerfile
+    ENV PORT 80
+    ```
+
+    Also, we can use it in the docker with the `$` symbol
+
+    ```Dockerfile
+    ENV PORT 80
+    EXPOSE $PORT
+    ```
+    
+*Notes* `b275b9b05010`: Image ID. You can use the first 10 characters of the full ID (e.g., `b275b9b05010af5fd9b1c2530fca9b59b13932ec868e6e2e26db933c07b59d86`). This ID can be found in Docker Desktop.
 
 ### 3. Display Running Containers
 Use the following command to display your running containers:
@@ -239,7 +265,8 @@ We can add more "to-be-ignored" files and folders to your `.dockerignore` file.
 ```.dockerignore
 node_modules
 package-lock.json
+.env
 .git
 .DS_Store
-.ieda
+.idea
 ```
