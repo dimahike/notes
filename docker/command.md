@@ -35,7 +35,10 @@ min_number = int(input('Please enter the min number: '))
 ```
 - `--rm`: Automatically removes the container after it exits.
 - `--name custom_container_name`: Allows you to specify a custom name for the container.
-- `-v VOLUME_NAME:/PATH_FOLDER`: create the persist store
+- add volumes (store)
+- - `-v IMAGE_PATH_DATA`: create the anonymous volume
+- - `-v VOLUME_NAME:/IMAGE_PATH_DATA`: Named Volume. It is persist
+- - `-v LOACAL_PATH_TO_CODE:/IMAGE_PATH_APP`: Bind Mount (Can work on the locale machine and see changes on the running container) [Bind mount](#15-bind-mounts-managed-by-you)
 - `8000:3000`: Maps local port 8000 to container port 3000.
 - `b275b9b05010`: Image ID. You can use the first 10 characters of the full ID (e.g., `b275b9b05010af5fd9b1c2530fca9b59b13932ec868e6e2e26db933c07b59d86`). This ID can be found in Docker Desktop.
 
