@@ -9,7 +9,12 @@ RUN npm install
 
 COPY . .
 
-EXPOSE 3000
+ARG DEFAULT_PORT=80
+
+ENV PORT $DEFAULT_PORT
+
+# or "EXPOSE 3000"
+EXPOSE $PORT
 
 CMD [ "node", "app.mjs" ]
 ```
@@ -39,7 +44,21 @@ RUN npm install
 ```Dockerfile
 COPY . .
 ```
+
 - **Explanation**: This line copies all files from your local machine's current directory to the working directory in the container. The first `.` represents the current directory on your local machine, and the second `.` represents the current directory inside the container (`/app`).
+
+```Dockerfile
+ARG DEFAULT_PORT=80
+```
+
+- **Explanation**: This line sets the build arguments. We can change arguments when we build an image with the `--build-arg DEFAULT_PORT=8000` flag
+
+```Dockerfile
+ENV PORT 80
+
+EXPOSE $PORT
+```
+- **Explanation**: This line sets environment variables that we can use in the project, such as `process.env.PORT`.
 
 ```Dockerfile
 EXPOSE 3000
