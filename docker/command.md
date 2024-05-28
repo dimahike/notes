@@ -36,9 +36,16 @@ min_number = int(input('Please enter the min number: '))
 - `--rm`: Automatically removes the container after it exits.
 - `--name custom_container_name`: Allows you to specify a custom name for the container.
 - add volumes (store)
-- - `-v IMAGE_PATH_DATA`: create the anonymous volume
-- - `-v VOLUME_NAME:/IMAGE_PATH_DATA`: Named Volume. It is persist
-- - `-v LOACAL_PATH_TO_CODE:/IMAGE_PATH_APP`: Bind Mount (Can work on the locale machine and see changes on the running container) [Bind mount](#15-bind-mounts-managed-by-you)
+  - `-v IMAGE_PATH_DATA`: create the anonymous volume (remove volume if we remove a container) and can not be shared across containers
+
+    Instead of the command You can add an anonymous volume in the `Dockerfile`
+
+    ```Dockerfile
+      VOLUME ["IMAGE_PATH_DATA"]
+    ```
+  - `-v VOLUME_NAME:/IMAGE_PATH_DATA`: Named Volume. It is persistent and can be shared across containers
+  - `-v LOACAL_PATH_TO_CODE:/IMAGE_PATH_APP`: Bind Mount. Store on the host system (local machine) and can be shared across containers [Bind mount](#15-bind-mounts-managed-by-you)
+    we can add option read only (`ro`) to the volume `-v LOACAL_PATH_TO_CODE:/IMAGE_PATH_APP:ro`    
 - `8000:3000`: Maps local port 8000 to container port 3000.
 - `b275b9b05010`: Image ID. You can use the first 10 characters of the full ID (e.g., `b275b9b05010af5fd9b1c2530fca9b59b13932ec868e6e2e26db933c07b59d86`). This ID can be found in Docker Desktop.
 
@@ -159,25 +166,12 @@ docker pull HOST:NAME
 docker volume COMMAND
 ```
 - `ls`: List volumes
+- `inspect VOLUME_NAME`: Display info
 - `prune`: Remove unused local volumes
 - `rm VOLUME_NAME`: Remove one or more volumes
-We create a volume when we create container (`docker run ...`) with the `-v VOLUME_NAME:/PATH_FOLDER` flag
+- `create VOLUME_NAME`: Create a named volume
 
-You can add an anonymous volume, which will be removed after the container is removed.
-
-```Dockerfile
-...
-COPY . /app
-
-EXPOSE 80
-
-VOLUME [ "/app/feedback" ]
-...
-```
-
-These notes provide instructions for binding a project directory to a Docker container to facilitate development without rebuilding the image after every change. Here's a more detailed explanation:
-
----
+   We create a volume when we create container (`docker run ...`) with the `-v VOLUME_NAME:/PATH_FOLDER` flag
 
 ### 15. Bind Mounts (Managed by you)
 
@@ -219,7 +213,9 @@ docker run -v "/Users/dima/project_1:/app" -v /app/node_modules <image_name>
 This ensures that `node_modules` in the container won't be overwritten by the local directory and won't require reinstalling dependencies each time.
 
 ##### Notes:
-We have to rerun server if we do any changes on the local machine so we have to use something like `nodemon`
+- It is good to defined only read mode for the host volume and rest read/write data defined to the volumes
+  `-v LOACAL_PATH_TO_CODE:/IMAGE_PATH_APP:ro`
+- We have to rerun server if we do any changes on the local machine so we have to use something like `nodemon`
 ```package.json
 ...
   "scripts": {
@@ -235,4 +231,15 @@ Run nodemon script in the conainer
 ```Dockerfile
 ...
 CMD [ "npm", "start"]
+```
+
+### 16. Docker ignore
+We can add more "to-be-ignored" files and folders to your `.dockerignore` file.
+
+```.dockerignore
+node_modules
+package-lock.json
+.git
+.DS_Store
+.ieda
 ```
