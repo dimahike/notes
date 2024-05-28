@@ -171,3 +171,65 @@ EXPOSE 80
 VOLUME [ "/app/feedback" ]
 ...
 ```
+
+These notes provide instructions for binding a project directory to a Docker container to facilitate development without rebuilding the image after every change. Here's a more detailed explanation:
+
+---
+
+### 15. Bind Mounts (Managed by you)
+
+When developing with Docker, you can use volume mounts to sync your local project directory with the container's file system. This allows you to work on your code locally while running it inside the container.
+
+#### Basic Volume Mount Command
+
+For macOS / Linux:
+```sh
+-v $(pwd):/app
+```
+
+For Windows:
+```sh
+-v "%cd%":/app
+```
+
+#### Example Command
+
+Assuming your project directory is `/Users/dima/project_1`, the Docker run command would look like this:
+
+```sh
+docker run -v "/Users/dima/project_1:/app" <image_name>
+```
+
+This command mounts your local project directory (`/Users/dima/project_1`) to the container's `/app` directory. 
+
+<img width="1614" alt="Снимок экрана 2024-05-26 в 17 36 33" src="https://github.com/dimahike/notes/assets/61499375/d18b31bf-8041-4121-87cb-53ffc4a4a109">
+You have to have access for sharing
+
+#### Preserving `node_modules`
+
+If you want to avoid overwriting certain directories like `node_modules` after running `npm install`, you can create an anonymous volume for `node_modules`:
+
+```sh
+docker run -v "/Users/dima/project_1:/app" -v /app/node_modules <image_name>
+```
+
+This ensures that `node_modules` in the container won't be overwritten by the local directory and won't require reinstalling dependencies each time.
+
+##### Notes:
+We have to rerun server if we do any changes on the local machine so we have to use something like `nodemon`
+```package.json
+...
+  "scripts": {
+    "start": "nodemon server.js"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.4"
+  }
+...
+```
+
+Run nodemon script in the conainer
+```Dockerfile
+...
+CMD [ "npm", "start"]
+```
