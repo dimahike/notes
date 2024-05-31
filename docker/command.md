@@ -270,3 +270,78 @@ package-lock.json
 .DS_Store
 .idea
 ```
+
+### 17. Request from container to host machine
+Use `host.docker.internal` as an address.
+
+#### For Example:
+
+```js
+mongoose.connect(
+  'mongodb://host.docker.internal:27017/database_name',
+);
+```
+*Notes*: **27017** is the default port
+
+### 18. Request from container to container
+ 
+#### IP Address
+
+Use `NetworkSettings.IPAddress` as an address.
+
+#### For Example:
+```bash
+docker container inspect mongodb  
+// find `NetworkSettings.IPAddress` (172.17.0.2)
+```
+
+```js
+mongoose.connect(
+  'mongodb://172.17.0.2:27017/database_name',
+);
+```
+*Notes*: **27017** is the default port
+
+---
+ 
+#### IP Docker Networks
+
+We can create your network. Don't need it API
+
+```bash
+docker network create NETWORK_NAME
+
+// connect with container
+docker run --name CONTAINER_NAME_1 -p 3000:3000 --network NETWORK_NAME IMAGE_NAME_1
+docker run --name CONTAINER_NAME_2 --network NETWORK_NAME IMAGE_NAME_2
+```
+
+We don't need to set a port for docker when we talk between containers. 
+
+```js
+mongoose.connect(
+  'mongodb://CONTAINER_NAME_2:27017/database_name',
+);
+```
+
+We have to set port `-p 3000:3000` when we address outside to the `CONTAINER_NAME_1`, but we can't address to the `CONTAINER_NAME_2`
+
+```bash
+curl --location 'http://localhost:3000/'
+```
+
+
+
+### 19. Network command
+
+```sh
+docker network COMMAND
+```
+-  `connect`     Connect a container to a network
+-  `create`      Create a network
+-  `disconnect`  Disconnect a container from a network
+-  `inspect`     Display detailed information on one or more networks
+-  `ls`          List networks
+-  `prune`       Remove all unused networks
+-  `rm`          Remove one or more networks
+
