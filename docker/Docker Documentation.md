@@ -78,3 +78,11 @@ When using Docker with Windows Subsystem for Linux 2 (WSL2), there are specific 
 - Regularly prune unused volumes to free up space.
 
 By understanding these core concepts and utilizing Docker’s powerful features, you can streamline the development, deployment, and management of your applications, ensuring consistency across different environments and simplifying the handling of dependencies and configuration.
+
+## Host Docker Internal
+
+Connect to your host machine
+
+```url
+host.docker.internal
+```
