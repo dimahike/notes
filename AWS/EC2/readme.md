@@ -1,0 +1,1 @@
+### Here all notes and guides are related to AWS EC2 (Elastic Compute Cloud) services.
