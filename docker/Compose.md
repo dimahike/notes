@@ -79,27 +79,43 @@ volumes:
 ### Commands
 
 1. **Start the containers:**
-    ```bash
-    docker-compose up
-    ```
-    - `-d` Run in detached mode.
-    - `--build` Build the images before starting the containers.
+```bash
+docker-compose up
+```
+- `-d` Run in detached mode.
+- `--build` Build the images before starting the containers.
 
-   Alternatively, build the images separately:
-    ```bash
-    docker-compose build
-    ```
+Alternatively, build the images separately:
+```bash
+docker-compose build
+```
 
 2. **Stop the containers and remove them:**
-    ```bash
-    docker-compose down
-    ```
-    - `-v` Remove the volumes as well.
+```bash
+docker-compose down
+```
+- `-v` Remove the volumes as well.
 
 3. **Build the images:**
-    ```bash
-    docker-compose build
-    ```
+```bash
+docker-compose build
+```
+
+4. **Run our command in a service:**
+
+```bash
+docker-compose run <service_name> <command>
+```
+- Example: `docker-compose run backend npm test`
+
+  If we add `ENTRYPOINT` in the dockerfile, we can run the command without `npm`:
+```Dockerfile
+ENTRYPOINT [ "npm" ]
+```   
+```bash
+docker-compose run backend test
+```
+- `--rm` Remove the container after running the command.
 
 ### Notes
 
@@ -113,5 +129,3 @@ volumes:
     networks:
       - goals-net
     ```
-
-Feel free to customize the setup as per your project requirements.

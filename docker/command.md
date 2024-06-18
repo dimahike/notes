@@ -6,7 +6,7 @@ Build the image after setting up the Docker configuration.
 docker build .
 ```
 - `-t name:tag` add a name and tag for creating image
-- `--build-arg DOCKER_ARGUMENT_NAME=VALUE` change doocker arguments when we build an image.
+- `--build-arg DOCKER_ARGUMENT_NAME=VALUE` change docker arguments when we build an image.
   
   ```Dockerfile
   ARG DOCKER_ARGUMENT_NAME=VALUE
@@ -142,7 +142,7 @@ docker rmi IMAGE IMAGE IMAGE ...
 ```
 You must remove all containers associated with an image before removing the image itself.
 
-If you wanna remove all images then you can run this command:
+If you want to remove all images then you can run this command:
 ```sh
 docker image prune -a
 ```
@@ -241,7 +241,7 @@ This ensures that `node_modules` in the container won't be overwritten by the lo
 ##### Notes:
 - It is good to defined only read mode for the host volume and rest read/write data defined to the volumes
   `-v LOACAL_PATH_TO_CODE:/IMAGE_PATH_APP:ro`
-- We have to rerun server if we do any changes on the local machine so we have to use something like `nodemon`
+- We have to rerun server if we do any changes on the local machine, so we have to use something like `nodemon`
 ```package.json
 ...
   "scripts": {
@@ -253,9 +253,9 @@ This ensures that `node_modules` in the container won't be overwritten by the lo
 ...
 ```
 
-Run nodemon script in the conainer
+Run nodemon script in the container
 ```Dockerfile
-...
+...  
 CMD [ "npm", "start"]
 ```
 
@@ -330,8 +330,6 @@ We have to set port `-p 3000:3000` when we address outside to the `CONTAINER_NAM
 curl --location 'http://localhost:3000/'
 ```
 
-
-
 ### 19. Network command
 
 ```sh
@@ -345,3 +343,47 @@ docker network COMMAND
 -  `prune`       Remove all unused networks
 -  `rm`          Remove one or more networks
 
+### 20. Docker exec
+
+We can run a command in the container
+```sh
+docker exec CONTAINER_NAME COMMAND
+```
+- `-it`: Runs an `-i` interactive session, `-t` allowing interaction with the Node terminal. 
+
+    For example, if your code requires user input:
+    ```sh
+    docker run -it -d node 
+    docker ps  
+    
+    --->
+    CONTAINER ID   IMAGE     COMMAND                  CREATED          STATUS          PORTS     NAMES
+    4f675b7c2834   node      "docker-entrypoint.s…"   46 seconds ago   Up 46 seconds             mystifying_lovelace
+    --->
+    
+    docer exec mystifying_lovelace npm init 
+    ```
+  
+we can override the default command when we run the container
+
+For example, we run our command then the container will be stopped
+```sh
+docker run -it node npm init
+```
+
+We can protect to input any command in the container
+
+```Dockerfile
+FROM node:14-alpine
+
+WORKDIR /app
+
+ENTRYPOINT [ "npm" ]
+```
+
+For example:
+```sh
+docker run -t mynpm install express --save
+```
+Here we can't run any command except `npm` command, and we don't need to write `npm` before the command.
+We run project without installing environments in the local machine in the bind mount `v "$(pwd):/app"`
